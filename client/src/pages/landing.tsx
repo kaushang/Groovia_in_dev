@@ -8,7 +8,8 @@ import GlassPanel from "@/components/glass-panel";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import type { Room } from "@shared/schema";
-
+import { FaPlus } from "react-icons/fa";
+import { BiDoorOpen } from "react-icons/bi";
 export default function Landing() {
   const [, setLocation] = useLocation();
   const [showJoinModal, setShowJoinModal] = useState(false);
@@ -16,9 +17,9 @@ export default function Landing() {
 
   const createRoomMutation = useMutation({
     mutationFn: () =>
-      apiRequest("POST", "/api/rooms", { 
+      apiRequest("POST", "/api/rooms", {
         name: "My Music Room",
-        createdBy: "demo-user" // In real app, use actual user ID
+        createdBy: "demo-user", // In real app, use actual user ID
       }),
     onSuccess: async (response) => {
       const room: Room = await response.json();
@@ -32,7 +33,7 @@ export default function Landing() {
       toast({
         title: "Failed to create room",
         description: "Please try again",
-        variant: "destructive"
+        variant: "destructive",
       });
     },
   });
@@ -46,20 +47,20 @@ export default function Landing() {
       icon: Users,
       title: "Real-time Collaboration",
       description: "Listen together with friends in synchronized rooms",
-      color: "text-purple-300"
+      color: "text-purple-300",
     },
     {
       icon: Vote,
       title: "Democratic Queue",
       description: "Vote on songs to shape the perfect playlist",
-      color: "text-blue-300"
+      color: "text-blue-300",
     },
     {
       icon: Share,
       title: "Easy Sharing",
       description: "Share rooms with links, codes, or QR codes",
-      color: "text-cyan-300"
-    }
+      color: "text-cyan-300",
+    },
   ];
 
   return (
@@ -68,22 +69,18 @@ export default function Landing() {
         {/* Hero Logo and Animation */}
         <div className="mb-8 relative">
           <div className="text-8xl md:text-9xl font-black bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent animate-float">
-            <Music className="inline-block mr-4 h-20 w-20 md:h-24 md:w-24" />
-            Groovia
-          </div>
-          <div className="absolute inset-0 text-8xl md:text-9xl font-black text-purple-500 opacity-20 blur-sm">
-            <Music className="inline-block mr-4 h-20 w-20 md:h-24 md:w-24" />
+            {/* <Music className="inline-block mr-4 h-20 w-20 md:h-24 md:w-24" /> */}
             Groovia
           </div>
         </div>
-        
+
         {/* Tagline */}
         <h2 className="text-2xl md:text-3xl font-light text-gray-200 mb-12 animate-pulse-soft">
           Because music is better together
         </h2>
 
         {/* Animated Soundwave Background */}
-        <div className="relative mb-12 h-24 overflow-hidden rounded-xl glass-panel">
+        {/* <div className="relative mb-12 h-24 overflow-hidden rounded-xl glass-panel">
           <div className="soundwave absolute inset-0"></div>
           <div className="flex items-center justify-center h-full">
             <div className="flex space-x-2">
@@ -99,7 +96,7 @@ export default function Landing() {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Action Buttons */}
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16">
@@ -110,17 +107,21 @@ export default function Landing() {
             disabled={createRoomMutation.isPending}
             data-testid="button-create-room"
           >
-            <span className="mr-3 group-hover:rotate-90 transition-transform">+</span>
+            <span className="">
+              <FaPlus style={{ width: "18px", height: "18px" }}/>
+            </span>
             {createRoomMutation.isPending ? "Creating..." : "Create Room"}
           </Button>
           <Button
             onClick={() => setShowJoinModal(true)}
-            variant="outline"
+
             size="lg"
-            className="w-full md:w-auto glass-panel border-2 border-purple-300 px-8 py-6 text-xl font-semibold hover:bg-white hover:bg-opacity-20 transition-all text-white hover:text-white"
+            className="w-full md:w-auto glass-panel hover:bg-white px-8 py-6 text-xl font-semibold hover:bg-opacity-20 transition-all text-white hover:text-white"
             data-testid="button-join-room"
           >
-            <span className="mr-3">🚪</span>
+            <span className="mr-2">
+              <BiDoorOpen style={{ width: "22px", height: "22px" }} />
+            </span>
             Join Room
           </Button>
         </div>
@@ -135,7 +136,9 @@ export default function Landing() {
                 className="p-6 text-center group hover:scale-105 transition-transform"
                 data-testid={`feature-card-${index}`}
               >
-                <div className={`text-4xl mb-4 ${feature.color} group-hover:animate-bounce`}>
+                <div
+                  className={`text-4xl mb-4 ${feature.color} group-hover:animate-bounce`}
+                >
                   <IconComponent className="w-12 h-12 mx-auto" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
@@ -146,9 +149,9 @@ export default function Landing() {
         </div>
       </div>
 
-      <JoinRoomModal 
-        isOpen={showJoinModal} 
-        onClose={() => setShowJoinModal(false)} 
+      <JoinRoomModal
+        isOpen={showJoinModal}
+        onClose={() => setShowJoinModal(false)}
       />
     </div>
   );
