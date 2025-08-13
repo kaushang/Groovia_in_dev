@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Music } from "lucide-react";
-import GlassPanel from "./glass-panel";
+import GlassPanel from "@/components/glass-panel";
 
 export default function Navigation() {
   const [location] = useLocation();

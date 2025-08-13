@@ -71,6 +71,77 @@ export class MemStorage implements IStorage {
     ];
 
     sampleSongs.forEach(song => this.songs.set(song.id, song));
+
+    // Create a demo room
+    const demoRoom: Room = {
+      id: "demo",
+      name: "Demo Music Room",
+      code: "DEMO01",
+      createdBy: "demo-user",
+      isActive: true,
+      listenerCount: 3,
+      createdAt: new Date()
+    };
+    this.rooms.set("demo", demoRoom);
+
+    // Create demo user
+    const demoUser: User = {
+      id: "demo-user",
+      username: "musiclover",
+      email: "demo@groovia.com",
+      fullName: "Demo User",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
+      songsPlayed: 42,
+      hoursListened: 8,
+      roomsJoined: 5,
+      createdAt: new Date()
+    };
+    this.users.set("demo-user", demoUser);
+
+    // Add some songs to demo room queue
+    const queueItems: QueueItem[] = [
+      {
+        id: "queue1",
+        roomId: "demo",
+        songId: "song1",
+        addedBy: "demo-user",
+        position: 0,
+        votes: 5,
+        isPlaying: true,
+        addedAt: new Date()
+      },
+      {
+        id: "queue2",
+        roomId: "demo",
+        songId: "song2",
+        addedBy: "demo-user",
+        position: 1,
+        votes: 3,
+        isPlaying: false,
+        addedAt: new Date()
+      },
+      {
+        id: "queue3",
+        roomId: "demo",
+        songId: "song3",
+        addedBy: "demo-user",
+        position: 2,
+        votes: 1,
+        isPlaying: false,
+        addedAt: new Date()
+      }
+    ];
+
+    queueItems.forEach(item => this.queueItems.set(item.id, item));
+
+    // Add demo user as room member
+    const roomMember: RoomMember = {
+      id: "member1",
+      roomId: "demo",
+      userId: "demo-user",
+      joinedAt: new Date()
+    };
+    this.roomMembers.set("member1", roomMember);
   }
 
   private generateRoomCode(): string {
@@ -98,7 +169,8 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
     const user: User = { 
-      ...insertUser, 
+      ...insertUser,
+      avatar: insertUser.avatar || null,
       id, 
       songsPlayed: 0,
       hoursListened: 0,
@@ -132,6 +204,7 @@ export class MemStorage implements IStorage {
     const code = this.generateRoomCode();
     const room: Room = {
       ...insertRoom,
+      createdBy: insertRoom.createdBy || null,
       id,
       code,
       listenerCount: 0,
@@ -178,7 +251,15 @@ export class MemStorage implements IStorage {
 
   async createSong(insertSong: InsertSong): Promise<Song> {
     const id = randomUUID();
-    const song: Song = { ...insertSong, id };
+    const song: Song = { 
+      ...insertSong,
+      album: insertSong.album || null,
+      duration: insertSong.duration || null,
+      thumbnail: insertSong.thumbnail || null,
+      externalId: insertSong.externalId || null,
+      source: insertSong.source || "youtube",
+      id 
+    };
     this.songs.set(id, song);
     return song;
   }
@@ -223,6 +304,9 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const queueItem: QueueItem = {
       ...insertQueueItem,
+      roomId: insertQueueItem.roomId || null,
+      songId: insertQueueItem.songId || null,
+      addedBy: insertQueueItem.addedBy || null,
       id,
       votes: 0,
       isPlaying: false,
@@ -264,6 +348,8 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const vote: Vote = {
       ...insertVote,
+      queueItemId: insertVote.queueItemId || null,
+      userId: insertVote.userId || null,
       id,
       createdAt: new Date()
     };
@@ -313,6 +399,8 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const member: RoomMember = {
       ...insertMember,
+      roomId: insertMember.roomId || null,
+      userId: insertMember.userId || null,
       id,
       joinedAt: new Date()
     };

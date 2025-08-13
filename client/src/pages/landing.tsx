@@ -1,18 +1,44 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Music, Users, Vote, Share } from "lucide-react";
 import JoinRoomModal from "@/components/join-room-modal";
 import GlassPanel from "@/components/glass-panel";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import type { Room } from "@shared/schema";
 
 export default function Landing() {
   const [, setLocation] = useLocation();
   const [showJoinModal, setShowJoinModal] = useState(false);
+  const { toast } = useToast();
+
+  const createRoomMutation = useMutation({
+    mutationFn: () =>
+      apiRequest("POST", "/api/rooms", { 
+        name: "My Music Room",
+        createdBy: "demo-user" // In real app, use actual user ID
+      }),
+    onSuccess: async (response) => {
+      const room: Room = await response.json();
+      toast({
+        title: "Room created!",
+        description: `Room code: ${room.code}`,
+      });
+      setLocation(`/room/${room.id}`);
+    },
+    onError: () => {
+      toast({
+        title: "Failed to create room",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    },
+  });
 
   const createRoom = () => {
-    // For demo, generate a room ID and navigate
-    const roomId = Math.random().toString(36).substr(2, 8);
-    setLocation(`/room/${roomId}`);
+    createRoomMutation.mutate();
   };
 
   const features = [
@@ -81,10 +107,11 @@ export default function Landing() {
             onClick={createRoom}
             size="lg"
             className="w-full md:w-auto bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 px-8 py-6 text-xl font-semibold btn-glow group"
+            disabled={createRoomMutation.isPending}
             data-testid="button-create-room"
           >
             <span className="mr-3 group-hover:rotate-90 transition-transform">+</span>
-            Create Room
+            {createRoomMutation.isPending ? "Creating..." : "Create Room"}
           </Button>
           <Button
             onClick={() => setShowJoinModal(true)}

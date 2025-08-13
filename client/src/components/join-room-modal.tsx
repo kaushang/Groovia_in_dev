@@ -63,10 +63,8 @@ export default function JoinRoomModal({ isOpen, onClose }: JoinRoomModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="glass-panel border-white/20 text-white max-w-md" data-testid="join-room-modal">
         <DialogHeader>
-          <DialogTitle className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Join a Room</h2>
-            <p className="text-gray-300 text-sm font-normal">Enter the room code to join your friends</p>
-          </DialogTitle>
+          <DialogTitle className="text-2xl font-bold mb-2 text-center">Join a Room</DialogTitle>
+          <p className="text-gray-300 text-sm font-normal text-center">Enter the room code to join your friends</p>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">

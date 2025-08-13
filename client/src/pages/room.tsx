@@ -35,6 +35,13 @@ export default function Room() {
       queryClient.invalidateQueries({ queryKey: ["/api/rooms", roomId] });
       toast({ title: "Song added to queue!" });
     },
+    onError: () => {
+      toast({
+        title: "Failed to add song",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    },
   });
 
   const voteMutation = useMutation({
