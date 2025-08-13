@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Music, Users, Vote, Share } from "lucide-react";
+import { Users, Vote, Share } from "lucide-react";
 import JoinRoomModal from "@/components/join-room-modal";
 import GlassPanel from "@/components/glass-panel";
 import { apiRequest } from "@/lib/queryClient";
@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Room } from "@shared/schema";
 import { FaPlus } from "react-icons/fa";
 import { BiDoorOpen } from "react-icons/bi";
+
 export default function Landing() {
   const [, setLocation] = useLocation();
   const [showJoinModal, setShowJoinModal] = useState(false);
@@ -79,25 +80,6 @@ export default function Landing() {
           Because music is better together
         </h2>
 
-        {/* Animated Soundwave Background */}
-        {/* <div className="relative mb-12 h-24 overflow-hidden rounded-xl glass-panel">
-          <div className="soundwave absolute inset-0"></div>
-          <div className="flex items-center justify-center h-full">
-            <div className="flex space-x-2">
-              {Array.from({ length: 7 }, (_, i) => (
-                <div
-                  key={i}
-                  className="w-1 bg-gradient-to-t from-purple-400 to-blue-400 rounded-full animate-pulse"
-                  style={{
-                    height: `${20 + (i % 3) * 20}px`,
-                    animationDelay: `${i * 0.2}s`
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div> */}
-
         {/* Main Action Buttons */}
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16">
           <Button
@@ -108,13 +90,12 @@ export default function Landing() {
             data-testid="button-create-room"
           >
             <span className="">
-              <FaPlus style={{ width: "18px", height: "18px" }}/>
+              <FaPlus style={{ width: "18px", height: "18px" }} />
             </span>
             {createRoomMutation.isPending ? "Creating..." : "Create Room"}
           </Button>
           <Button
             onClick={() => setShowJoinModal(true)}
-
             size="lg"
             className="w-full md:w-auto glass-panel hover:bg-white px-8 py-6 text-xl font-semibold hover:bg-opacity-20 transition-all text-white hover:text-white"
             data-testid="button-join-room"

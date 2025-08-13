@@ -127,9 +127,7 @@
   }
 
   .gradient-animated-bg {
-    background: var(--gradient-animated);
-    background-size: 800% 800%;
-    animation: gradientShift 8s ease infinite;
+    background: var(--gradient-primary);
   }
 
   .nav-link {
