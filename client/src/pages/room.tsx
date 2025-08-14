@@ -93,15 +93,11 @@ export default function Room() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button variant="ghost" size="sm" className="glass-panel hover:bg-white/20" data-testid="button-qr-code">
-              <QrCode className="w-4 h-4 mr-2" />
-              QR Code
-            </Button>
             <Button variant="ghost" size="sm" className="glass-panel hover:bg-white/20" data-testid="button-share-link">
               <ExternalLink className="w-4 h-4 mr-2" />
               Share Link
             </Button>
-            <Button size="sm" className="bg-gradient-to-r from-red-500 to-pink-500 btn-glow" data-testid="button-leave-room">
+            <Button size="sm" className="bg-gradient-to-r from-red-700 to-red-600 " data-testid="button-leave-room">
               <LogOut className="w-4 h-4 mr-2" />
               Leave Room
             </Button>
@@ -126,7 +122,7 @@ export default function Room() {
               placeholder="Search for songs, artists, or albums..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-white/10 border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-purple-400 pl-12"
+              className="bg-white/10 border-white/20 text-white placeholder:text-white focus:ring-2 focus:ring-purple-400 pl-12"
               data-testid="input-search-songs"
             />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -167,7 +163,7 @@ export default function Room() {
           </div>
 
           {/* Quick Add Categories */}
-          <div>
+          {/* <div>
             <h3 className="text-lg font-semibold mb-3 text-white">Quick Categories</h3>
             <div className="grid grid-cols-2 gap-3">
               <Button variant="ghost" className="glass-panel p-3 h-auto flex-col hover:bg-white/20">
@@ -179,7 +175,7 @@ export default function Room() {
                 <span className="text-sm">Favorites</span>
               </Button>
             </div>
-          </div>
+          </div> */}
         </GlassPanel>
 
         {/* Now Playing */}
@@ -245,26 +241,6 @@ export default function Room() {
               <p className="text-gray-400">No songs in queue</p>
             </div>
           )}
-
-          {/* Volume Control */}
-          <div className="flex items-center space-x-3 w-full mb-6">
-            <Volume2 className="w-4 h-4 text-gray-400" />
-            <div className="flex-1 bg-white/20 rounded-full h-2">
-              <div className="bg-gradient-to-r from-purple-400 to-blue-400 h-2 rounded-full w-3/4"></div>
-            </div>
-          </div>
-
-          {/* Room Stats */}
-          <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="glass-panel p-3 rounded-lg text-center">
-              <Users className="w-5 h-5 text-purple-300 mb-1 mx-auto" />
-              <p className="text-sm text-gray-300" data-testid="listener-count">{room.listenerCount} Listeners</p>
-            </div>
-            <div className="glass-panel p-3 rounded-lg text-center">
-              <Music className="w-5 h-5 text-blue-300 mb-1 mx-auto" />
-              <p className="text-sm text-gray-300" data-testid="queue-count">{room.queueItems.length} in Queue</p>
-            </div>
-          </div>
         </GlassPanel>
 
         {/* Queue List */}
@@ -296,7 +272,7 @@ export default function Room() {
                       variant="ghost"
                       size="sm"
                       onClick={() => voteMutation.mutate({ queueItemId: item.id, voteType: 'up' })}
-                      className="text-green-400 hover:text-green-300 transition-colors p-1"
+                      className="text-green-500 transition-colors hover:bg-black/20 p-1"
                       data-testid={`button-upvote-${item.id}`}
                     >
                       <ChevronUp className="w-4 h-4" />
@@ -308,7 +284,7 @@ export default function Room() {
                       variant="ghost"
                       size="sm"
                       onClick={() => voteMutation.mutate({ queueItemId: item.id, voteType: 'down' })}
-                      className="text-red-400 hover:text-red-300 transition-colors p-1"
+                      className="text-red-500 transition-colors hover:bg-black/20 hover:text-red-500 p-1"
                       data-testid={`button-downvote-${item.id}`}
                     >
                       <ChevronDown className="w-4 h-4" />
@@ -326,10 +302,6 @@ export default function Room() {
 
           {/* Queue Actions */}
           <div className="space-y-3">
-            <Button variant="ghost" className="w-full glass-panel p-3 hover:bg-white/20 text-white" data-testid="button-shuffle-queue">
-              <Shuffle className="w-4 h-4 mr-2" />
-              Shuffle Queue
-            </Button>
             <Button variant="ghost" className="w-full glass-panel p-3 hover:bg-white/20 text-white" data-testid="button-clear-queue">
               <Trash2 className="w-4 h-4 mr-2" />
               Clear Queue

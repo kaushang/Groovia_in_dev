@@ -1,8 +1,5 @@
-import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Music } from "lucide-react";
-import GlassPanel from "@/components/glass-panel";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -14,7 +11,7 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-panel-nav ">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
@@ -35,13 +32,8 @@ export default function Navigation() {
           
           <div className="flex items-center space-x-4">
             <Link href="/auth">
-              <Button variant="ghost" size="sm" className="text-white hover:text-purple-300" data-testid="nav-login">
-                Login
-              </Button>
-            </Link>
-            <Link href="/auth">
               <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500 btn-glow" data-testid="nav-signup">
-                Sign Up
+                Register
               </Button>
             </Link>
           </div>
