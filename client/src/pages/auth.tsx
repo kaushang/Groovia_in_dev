@@ -193,19 +193,6 @@ export default function Auth() {
           {/* Signup Form */}
           {authMode === 'signup' && (
             <form onSubmit={handleSignup} className="space-y-5">
-              {/* <div>
-                <Label htmlFor="fullName" className="text-gray-100">Full Name</Label>
-                <Input
-                  id="fullName"
-                  type="text"
-                  required
-                  value={signupData.fullName}
-                  onChange={(e) => setSignupData({...signupData, fullName: e.target.value})}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-purple-400"
-                  placeholder="Enter your full name"
-                  data-testid="input-full-name"
-                />
-              </div> */}
               <div>
                 <Label htmlFor="email" className="text-gray-100">Email</Label>
                 <Input
