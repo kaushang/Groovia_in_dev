@@ -83,7 +83,7 @@ export default function Room() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold mb-2 text-white" data-testid="room-name">
-              Room: {room.name} 🎵
+              Room: {room.name}
             </h1>
             <p className="text-gray-300">
               {room.listenerCount} listeners • Room Code: 
@@ -93,7 +93,7 @@ export default function Room() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button variant="ghost" size="sm" className="glass-panel hover:bg-white/20" data-testid="button-share-link">
+            <Button variant="ghost" size="sm" className="glass-panel hover:bg-white/10 hover:text-white" data-testid="button-share-link">
               <ExternalLink className="w-4 h-4 mr-2" />
               Share Link
             </Button>

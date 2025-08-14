@@ -32,7 +32,7 @@ export default function Navigation() {
           
           <div className="flex items-center space-x-4">
             <Link href="/auth">
-              <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500 btn-glow" data-testid="nav-signup">
+              <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500" data-testid="nav-signup">
                 Register
               </Button>
             </Link>

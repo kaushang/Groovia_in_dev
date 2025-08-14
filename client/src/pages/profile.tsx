@@ -117,7 +117,7 @@ export default function Profile() {
             {/* Profile Avatar */}
             <img 
               src={user.avatar} 
-              alt="User profile picture" 
+              alt="" 
               className="w-24 h-24 rounded-full object-cover border-4 border-purple-300" 
               data-testid="profile-avatar"
             />
@@ -129,20 +129,20 @@ export default function Profile() {
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center">
                   <Music className="w-4 h-4 mr-2 text-purple-300" />
-                  <span data-testid="songs-played">{user.songsPlayed}</span> songs played
+                  <span data-testid="songs-played">{user.songsPlayed}</span> &nbsp; songs played
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2 text-blue-300" />
-                  <span data-testid="hours-listened">{user.hoursListened}</span> hours listening
+                  <span data-testid="hours-listened">{user.hoursListened}</span> &nbsp; hours listening
                 </div>
                 <div className="flex items-center">
                   <Users className="w-4 h-4 mr-2 text-green-300" />
-                  <span data-testid="rooms-joined">{user.roomsJoined}</span> rooms joined
+                  <span data-testid="rooms-joined">{user.roomsJoined}</span> &nbsp; rooms joined
                 </div>
               </div>
             </div>
             
-            <Button className="bg-gradient-to-r from-purple-500 to-blue-500 btn-glow" data-testid="button-edit-profile">
+            <Button className="bg-gradient-to-r from-purple-500 to-blue-500 " data-testid="button-edit-profile">
               <Edit className="w-4 h-4 mr-2" />
               Edit Profile
             </Button>
@@ -150,7 +150,7 @@ export default function Profile() {
         </GlassPanel>
 
         {/* Profile Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-2 gap-6">
           
           {/* Recently Played */}
           <GlassPanel className="p-6">
@@ -177,40 +177,6 @@ export default function Profile() {
             <Button variant="link" className="w-full mt-4 text-purple-300 hover:text-purple-200 text-sm p-0" data-testid="button-view-history">
               View Full History
             </Button>
-          </GlassPanel>
-
-          {/* Top Artists */}
-          <GlassPanel className="p-6">
-            <h2 className="text-xl font-bold mb-4 flex items-center text-white">
-              <Star className="w-5 h-5 mr-3 text-yellow-300" />
-              Top Artists
-            </h2>
-            <div className="space-y-4">
-              {topArtists.map((artist, index) => (
-                <div key={index} className="flex items-center justify-between" data-testid={`top-artist-${index}`}>
-                  <div className="flex items-center">
-                    <img 
-                      src={artist.avatar} 
-                      alt={`${artist.name} photo`} 
-                      className="w-12 h-12 rounded-full object-cover mr-3" 
-                    />
-                    <div>
-                      <p className="font-medium text-sm text-white">{artist.name}</p>
-                      <p className="text-gray-400 text-xs">{artist.playCount} plays</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="w-16 bg-white/20 rounded-full h-1 mb-1">
-                      <div 
-                        className="bg-gradient-to-r from-yellow-400 to-orange-400 h-1 rounded-full" 
-                        style={{ width: `${artist.percentage}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-xs text-gray-400">{artist.percentage}%</span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </GlassPanel>
 
           {/* Friends Activity */}

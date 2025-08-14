@@ -61,22 +61,23 @@ export default function JoinRoomModal({ isOpen, onClose }: JoinRoomModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="glass-panel border-white/20 text-white max-w-md" data-testid="join-room-modal">
+      <DialogContent className="glass-panel border-white/20 bg-gray text-white max-w-[364px] sm:max-w-md" data-testid="join-room-modal">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold mb-2 text-center">Join a Room</DialogTitle>
-          <p className="text-gray-300 text-sm font-normal text-center">Enter the room code to join your friends</p>
+          <DialogTitle className="text-3xl font-bold mb-0 text-center">Join a Room</DialogTitle>
+          {/* <p className="text-gray-300 text-sm font-normal text-center">Enter the room code to join your friends</p> */}
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
+            
           <div>
-            <Label htmlFor="roomCode" className="text-gray-300">Room Code</Label>
+            {/* <Label htmlFor="roomCode" className="text-gray-300 text-lg">Room Code</Label> */}
             <Input
               id="roomCode"
               type="text"
               value={roomCode}
               onChange={handleCodeChange}
-              placeholder="Enter 6-digit code (e.g., FV2024)"
-              className="bg-white/10 border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-400 text-center text-lg font-mono uppercase tracking-widest"
+              placeholder="Enter 6-digit Room Code"
+              className="bg-white/10 border-white/20 placeholder:text-white-400 text-center text-lg font-mono uppercase tracking-widest mt-2"
               data-testid="input-room-code"
             />
           </div>
@@ -86,14 +87,14 @@ export default function JoinRoomModal({ isOpen, onClose }: JoinRoomModalProps) {
               type="button" 
               onClick={onClose} 
               variant="ghost" 
-              className="flex-1 glass-panel hover:bg-white/20 text-white"
+              className="flex-1 glass-panel hover:bg-white/10 hover:text-white"
               data-testid="button-cancel"
             >
               Cancel
             </Button>
             <Button 
               type="submit" 
-              className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 btn-glow"
+              className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600"
               disabled={joinRoomMutation.isPending}
               data-testid="button-join"
             >
