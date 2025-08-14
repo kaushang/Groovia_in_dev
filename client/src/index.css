@@ -47,7 +47,7 @@
   --blue-bright: hsl(217 91% 60%);
   --glass-white: hsla(0 0% 100% / 0.1);
   --glass-border: hsla(0 0% 100% / 0.2);
-  --gradient-primary: linear-gradient(135deg, hsl(260 60% 45%) 0%, hsl(217 91% 60%) 100%);
+  --gradient-primary: linear-gradient(135deg, hsl(260, 79%, 40%) 0%, hsl(216, 100%, 11%) 100%);
   --gradient-animated: linear-gradient(270deg, hsl(260 60% 45%), hsl(272 69% 68%), hsl(217 91% 60%), hsl(188 95% 68%));
 }
 
@@ -107,6 +107,9 @@
   .glass-panel {
     @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl;
   }
+  .glass-panel-nav {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-b-xl;
+  }
   
   .glass-panel-subtle {
     @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-lg;
@@ -135,7 +138,7 @@
   }
 
   .nav-link.active {
-    @apply text-purple-300;
+    @apply text-purple-500;
   }
 }
 

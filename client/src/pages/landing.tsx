@@ -69,7 +69,7 @@ export default function Landing() {
       <div className="text-center max-w-4xl mx-auto">
         {/* Hero Logo and Animation */}
         <div className="mb-8 relative">
-          <div className="text-8xl md:text-9xl font-black bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent animate-float">
+          <div className="text-8xl md:text-9xl font-700 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
             {/* <Music className="inline-block mr-4 h-20 w-20 md:h-24 md:w-24" /> */}
             Groovia
           </div>
@@ -85,7 +85,7 @@ export default function Landing() {
           <Button
             onClick={createRoom}
             size="lg"
-            className="w-full md:w-auto bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 px-8 py-6 text-xl font-semibold btn-glow group"
+            className="w-full md:w-auto bg-gradient-to-r from-purple-600 to-white-500 px-8 py-6 text-xl font-semibold group"
             disabled={createRoomMutation.isPending}
             data-testid="button-create-room"
           >
@@ -94,10 +94,11 @@ export default function Landing() {
             </span>
             {createRoomMutation.isPending ? "Creating..." : "Create Room"}
           </Button>
+          
           <Button
             onClick={() => setShowJoinModal(true)}
             size="lg"
-            className="w-full md:w-auto glass-panel hover:bg-white px-8 py-6 text-xl font-semibold hover:bg-opacity-20 transition-all text-white hover:text-white"
+            className="w-full md:w-auto px-8 py-6 text-xl font-semibold bg-gradient-to-r from-purple-600 to-white-500 text-white"
             data-testid="button-join-room"
           >
             <span className="mr-2">
@@ -114,11 +115,11 @@ export default function Landing() {
             return (
               <GlassPanel
                 key={index}
-                className="p-6 text-center group hover:scale-105 transition-transform"
+                className="p-6 text-center group  transition-transform duration-100"
                 data-testid={`feature-card-${index}`}
               >
                 <div
-                  className={`text-4xl mb-4 ${feature.color} group-hover:animate-bounce`}
+                  className={`text-4xl mb-4 ${feature.color}`}
                 >
                   <IconComponent className="w-12 h-12 mx-auto" />
                 </div>
