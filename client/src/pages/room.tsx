@@ -162,20 +162,6 @@ export default function Room() {
             ) : null}
           </div>
 
-          {/* Quick Add Categories */}
-          {/* <div>
-            <h3 className="text-lg font-semibold mb-3 text-white">Quick Categories</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <Button variant="ghost" className="glass-panel p-3 h-auto flex-col hover:bg-white/20">
-                <span className="text-orange-400 mb-2">🔥</span>
-                <span className="text-sm">Trending</span>
-              </Button>
-              <Button variant="ghost" className="glass-panel p-3 h-auto flex-col hover:bg-white/20">
-                <span className="text-red-400 mb-2">❤️</span>
-                <span className="text-sm">Favorites</span>
-              </Button>
-            </div>
-          </div> */}
         </GlassPanel>
 
         {/* Now Playing */}
