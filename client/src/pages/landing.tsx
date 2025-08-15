@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Users, Vote, Share } from "lucide-react";
 import JoinRoomModal from "@/components/join-room-modal";
+import CreateRoomModal from "@/components/create-room-modal";
 import GlassPanel from "@/components/glass-panel";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +15,7 @@ import { BiDoorOpen } from "react-icons/bi";
 export default function Landing() {
   const [, setLocation] = useLocation();
   const [showJoinModal, setShowJoinModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const { toast } = useToast();
 
   const createRoomMutation = useMutation({
@@ -83,7 +85,7 @@ export default function Landing() {
         {/* Main Action Buttons */}
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16">
           <Button
-            onClick={createRoom}
+            onClick={() => setShowCreateModal(true)}
             size="lg"
             className="w-full md:w-auto bg-gradient-to-r from-purple-600 to-white-500 px-8 py-6 text-xl font-semibold group"
             disabled={createRoomMutation.isPending}
@@ -134,6 +136,10 @@ export default function Landing() {
       <JoinRoomModal
         isOpen={showJoinModal}
         onClose={() => setShowJoinModal(false)}
+      />
+      <CreateRoomModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
       />
     </div>
   );

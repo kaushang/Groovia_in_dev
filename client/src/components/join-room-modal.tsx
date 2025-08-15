@@ -21,8 +21,9 @@ export default function JoinRoomModal({ isOpen, onClose }: JoinRoomModalProps) {
   const joinRoomMutation = useMutation({
     mutationFn: (code: string) =>
       apiRequest("GET", `/api/rooms/code/${code}`),
-    onSuccess: async (response) => {
+      onSuccess: async (response) => {
       const room = await response.json();
+      room.listenerCount++;
       toast({
         title: "Joined room!",
         description: `Welcome to ${room.name}`,
