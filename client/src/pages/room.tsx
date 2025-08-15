@@ -1,4 +1,4 @@
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import type { RoomWithDetails, Song, QueueItemWithSong } from "@shared/schema";
 
 export default function Room() {
   const { roomId } = useParams<{ roomId: string }>();
+  const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser] = useState({ id: "demo-user", username: "You" }); // Mock user
   const [isPlaying, setIsPlaying] = useState(true);
@@ -22,6 +23,24 @@ export default function Room() {
     queryKey: ["/api/rooms", roomId],
     enabled: !!roomId,
   });
+
+  const joinRoomMutation = useMutation({
+    mutationFn: () =>
+      apiRequest("POST", `/api/rooms/${roomId}/join`, { userId: currentUser.id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/rooms", roomId] });
+    },
+    onError: () => {
+      // Silently fail - user might already be a member
+    },
+  });
+
+  // Auto-join room when component loads
+  useEffect(() => {
+    if (room && roomId) {
+      joinRoomMutation.mutate();
+    }
+  }, [room?.id]);
 
   const { data: searchResults = [], isLoading: isSearching } = useQuery<Song[]>({
     queryKey: ["/api/songs/search", { q: searchQuery }],
@@ -52,6 +71,25 @@ export default function Room() {
     },
   });
 
+  const leaveRoomMutation = useMutation({
+    mutationFn: () =>
+      apiRequest("POST", `/api/rooms/${roomId}/leave`, { userId: currentUser.id }),
+    onSuccess: () => {
+      toast({
+        title: "Left room",
+        description: "You have successfully left the room",
+      });
+      setLocation("/");
+    },
+    onError: () => {
+      toast({
+        title: "Failed to leave room", 
+        description: "Please try again",
+        variant: "destructive"
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
@@ -77,17 +115,17 @@ export default function Room() {
   const currentSong = room.queueItems.find(item => item.isPlaying) || room.queueItems[0];
 
   return (
-    <div className="min-h-screen px-6 pt-24 pb-8">
+    <div className="min-h-screen pt-24 pb-8">
       {/* Room Header */}
-      <GlassPanel className="p-6 mb-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="container mx-auto px-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 w-[100%]">
           <div>
-            <h1 className="text-3xl font-bold mb-2 text-white" data-testid="room-name">
+            <h1 className="text-2xl font-bold text-white" data-testid="room-name">
               Room: {room.name}
             </h1>
             <p className="text-gray-300">
               {room.listenerCount} listeners • Room Code: 
-              <span className="font-mono bg-purple-500 px-2 py-1 rounded text-sm ml-2" data-testid="room-code">
+              <span className="font-monorounded text-sm ml-2" data-testid="room-code">
                 {room.code}
               </span>
             </p>
@@ -97,24 +135,30 @@ export default function Room() {
               <ExternalLink className="w-4 h-4 mr-2" />
               Share Link
             </Button>
-            <Button size="sm" className="bg-gradient-to-r from-red-700 to-red-600 " data-testid="button-leave-room">
+            <Button 
+              size="sm" 
+              className="bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500" 
+              onClick={() => leaveRoomMutation.mutate()}
+              disabled={leaveRoomMutation.isPending}
+              data-testid="button-leave-room"
+            >
               <LogOut className="w-4 h-4 mr-2" />
-              Leave Room
+              {leaveRoomMutation.isPending ? "Leaving..." : "Leave Room"}
             </Button>
           </div>
         </div>
-      </GlassPanel>
+      </div>
 
       {/* Three Column Layout */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        
+      <div className="grid lg:grid-cols-3 gap-6 px-12">
+
         {/* Search and Add Songs */}
         <GlassPanel className="p-6">
           <h2 className="text-2xl font-bold mb-6 flex items-center text-white">
             <Search className="w-6 h-6 mr-3 text-purple-300" />
             Add Songs
           </h2>
-          
+
           {/* Search Bar */}
           <div className="relative mb-6">
             <Input
@@ -278,7 +322,7 @@ export default function Room() {
                   </div>
                 </div>
               ))}
-            
+
             {room.queueItems.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-400">Queue is empty. Add some songs!</p>
