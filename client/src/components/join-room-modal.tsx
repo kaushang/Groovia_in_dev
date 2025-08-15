@@ -23,7 +23,6 @@ export default function JoinRoomModal({ isOpen, onClose }: JoinRoomModalProps) {
       apiRequest("GET", `/api/rooms/code/${code}`),
       onSuccess: async (response) => {
       const room = await response.json();
-      room.listenerCount++;
       toast({
         title: "Joined room!",
         description: `Welcome to ${room.name}`,
