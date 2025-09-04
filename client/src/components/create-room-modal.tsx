@@ -3,8 +3,13 @@ import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,28 +18,37 @@ interface CreateRoomModalProps {
   onClose: () => void;
 }
 
-export default function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
+export default function CreateRoomModal({
+  isOpen,
+  onClose,
+}: CreateRoomModalProps) {
   const [roomName, setRoomName] = useState("");
+  const [username, setUsername] = useState("");
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const createRoomMutation = useMutation({
-    mutationFn: (name: string) =>
-      apiRequest("POST", "/api/rooms", { name }),
+    mutationFn: ({ name, username }: { name: string; username: string }) =>
+      apiRequest("POST", "/api/rooms", { name, username }),
     onSuccess: async (response) => {
-      const room = await response.json();
+      const res = await response.json();
+      const userId = res.userId;
+      // console.log(userId);
+      // console.log(res.room.name);
       toast({
         title: "Room created!",
-        description: `${room.name} has been created successfully`,
+        description: `${res.room.name} has been created successfully`,
       });
       onClose();
-      setLocation(`/room/${room.id}`);
+      // setLocation(`/room/${res.room._id}`);
+      navigate(`/room/${res.room._id}?user=${userId}`);
     },
     onError: () => {
       toast({
         title: "Failed to create room",
         description: "Please try again",
-        variant: "destructive"
+        variant: "destructive",
       });
     },
   });
@@ -42,69 +56,87 @@ export default function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProp
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const name = roomName.trim();
-    
+    const trimmedUsername = username.trim();
+
+    if (trimmedUsername.length === 0) {
+      toast({
+        title: "Username required",
+        description: "Please enter a username",
+        variant: "destructive",
+      });
+      return;
+    }
     if (name.length === 0) {
       toast({
         title: "Room name required",
         description: "Please enter a room name",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
-    if (name.length > 16) {
-      toast({
-        title: "Name too long",
-        description: "Room name must be 16 characters or less",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    createRoomMutation.mutate(name);
+    createRoomMutation.mutate({ name, username: trimmedUsername });
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRoomNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     if (value.length > 16) value = value.slice(0, 16);
     setRoomName(value);
   };
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    if (value.length > 16) value = value.slice(0, 16);
+    setUsername(value);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="glass-panel border-white/20 bg-gray text-white max-w-[364px] sm:max-w-md" data-testid="create-room-modal">
+      <DialogContent
+        className="glass-panel border-white/20 bg-gray text-white max-w-[364px] sm:max-w-md"
+        data-testid="create-room-modal"
+      >
         <DialogHeader>
-          <DialogTitle className="text-3xl font-bold mb-0 text-center">Create a Room</DialogTitle>
-          {/* <p className="text-gray-300 text-sm font-normal text-center">Enter a name for your new room</p> */}
+          <DialogTitle className="text-3xl font-bold mb-0 text-center">
+            Create a Room
+          </DialogTitle>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-            
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            {/* <Label htmlFor="roomName" className="text-gray-300 text-lg">Room Name</Label> */}
+            <Input
+              id="username"
+              type="text"
+              value={username}
+              onChange={handleUsernameChange}
+              placeholder="Enter Username"
+              className="bg-white/10 border-white/20 placeholder:text-white-400 text-lg tracking-widest mt-2 p-5"
+              data-testid="input-user-name"
+            />
+          </div>
+
+          <div>
             <Input
               id="roomName"
               type="text"
               value={roomName}
-              onChange={handleNameChange}
-              placeholder="Enter Room Name (max 16 chars)"
-              className="bg-white/10 border-white/20 placeholder:text-white-400 text-center text-lg mt-2"
+              onChange={handleRoomNameChange}
+              placeholder="Enter Room Name"
+              className="bg-white/10 border-white/20 placeholder:text-white-400 text-lg tracking-widest mt-2 p-5"
               data-testid="input-room-name"
             />
           </div>
-          
+
           <div className="flex space-x-3">
-            <Button 
-              type="button" 
-              onClick={onClose} 
-              variant="ghost" 
+            <Button
+              type="button"
+              onClick={onClose}
+              variant="ghost"
               className="flex-1 glass-panel hover:bg-white/10 hover:text-white"
               data-testid="button-cancel"
             >
               Cancel
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600"
               disabled={createRoomMutation.isPending}
               data-testid="button-create"

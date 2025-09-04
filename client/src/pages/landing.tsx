@@ -8,7 +8,7 @@ import CreateRoomModal from "@/components/create-room-modal";
 import GlassPanel from "@/components/glass-panel";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import type { Room } from "@shared/schema";
+import { Room } from "@shared/schema";
 import { FaPlus } from "react-icons/fa";
 import { BiDoorOpen } from "react-icons/bi";
 
@@ -25,7 +25,7 @@ export default function Landing() {
         createdBy: "demo-user", // In real app, use actual user ID
       }),
     onSuccess: async (response) => {
-      const room: Room = await response.json();
+      const room = await response.json();
       toast({
         title: "Room created!",
         description: `Room code: ${room.code}`,

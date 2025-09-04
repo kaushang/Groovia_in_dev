@@ -27,7 +27,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen gradient-animated-bg">
-          <Navigation />
           <Router />
           <Toaster />
         </div>
